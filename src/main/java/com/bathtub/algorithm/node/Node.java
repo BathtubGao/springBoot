@@ -12,4 +12,9 @@ public class Node<V> {
 
     public Node() {
     }
+
+    public Node(V value, Node<V> next) {
+        this.value = value;
+        this.next = next;
+    }
 }

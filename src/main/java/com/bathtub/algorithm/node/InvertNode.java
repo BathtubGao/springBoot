@@ -20,43 +20,44 @@ public class InvertNode {
      * @author 17031612
      * @date 2022/3/9
      */
-    public static void invert(Node<Integer> node, int from, int to) {
+    public static Node invert(Node<Integer> head, int left, int right) {
+        if (left == right)
+            return head;
+        Node newHead = new Node(0, head);
         int index = 1;
-        Node<Integer> fromN = null;
-        Node<Integer> toN = null;
-        Node<Integer> cur = node.next;
-        Node<Integer> pre = cur;
+        right++;
+        Node fromN = null;
+        Node toN = null;
+        Node cur = newHead.next;
+        Node pre = newHead;
         while (cur != null) {
-            Node<Integer> next = cur.next;
-            if (index < from) {
-                cur = next;
-            } else if (index == from) {
+            Node next = cur.next;
+            if (index == left - 1) {
+                pre = cur;
+            } else if (index == left) {
                 fromN = cur;
                 fromN.next = null;
                 toN = fromN;
-                cur = next;
-            } else if (index > from && index < to) {
+            } else if (index > left && index < right) {
                 cur.next = fromN;
                 fromN = cur;
-                cur = next;
-            } else if (index == to) {
+            } else if (index == right) {
                 toN.next = cur;
-                cur = next;
-            } else if (index > to) {
-                cur = next;
+                pre.next = fromN;
             }
+            cur = next;
             index++;
         }
-        pre.next = fromN;
+        if (index == right) {
+            toN.next = cur;
+            pre.next = fromN;
+        }
+        return newHead.next;
     }
 
     public static void main(String[] args) {
-        Node<Integer> node = new Node<>();
-        node.next = new Node<>(1);
-        node.next.next = new Node<>(2);
-        node.next.next.next = new Node<>(3);
-        node.next.next.next.next = new Node<>(4);
-        invert(node, 2, 4);
-        System.out.println(node);
+        Node<Integer> node = new Node<>(1, new Node<>(2, new Node<>(3, new Node<>(4, new Node<>(5)))));
+        Node<Integer> newNode = invert(node, 2, 3);
+        System.out.println(newNode);
     }
 }
